@@ -12,6 +12,7 @@ char_arr.forEach((char) => {
 let numbers_arr = [];
 let operators_arr = [];
 let final_expression = [];
+let latest_operator = '';
 
 document.addEventListener('DOMContentLoaded', () => {
     const display = document.querySelector('.display-value');
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (value == '0' || value == '1' || value == '2' || value == '3' || value == '4'
             || value == '5' || value == '6' || value == '7' || value == '8' || value == '9') 
             {
+                latest_operator = '';
                 if (final_expression.length == 1)
                 {
                     // display.textContent = 0;
@@ -40,10 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             else if (value == 'c') {
+                latest_operator = '';
                 display.textContent = 0;
                 display_val = 0;
+                numbers_arr.splice(0, numbers_arr.length);
+                operators_arr.splice(0, operators_arr.length);                
             }
             else if (value == '+' || value == '-' || value == '*' || value == '/') {
+                latest_operator = '';
                 if (display_val == 0) {
 
                 }
@@ -63,52 +69,60 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             else if (value == '=') {
-                let total = 0;
-                numbers_arr.push(display.textContent);
-                console.log(numbers_arr,"--> array", operators_arr, "==> operators arr");
-                for (i = 0; i < numbers_arr.length; i++)
+                if (latest_operator == '=')
                 {
-                    final_expression.push(numbers_arr[i]);
-                    if (i < operators_arr.length)
-                        {
-                            final_expression.push(operators_arr[i]);
+
+                }
+                else 
+                {
+                    latest_operator = '=';
+                    let total = 0;
+                    numbers_arr.push(display.textContent);
+                    console.log(numbers_arr,"--> array", operators_arr, "==> operators arr");
+                    for (i = 0; i < numbers_arr.length; i++)
+                    {
+                        final_expression.push(numbers_arr[i]);
+                        if (i < operators_arr.length)
+                            {
+                                final_expression.push(operators_arr[i]);
+                            }
+                    }
+                    function calculate(a, operator, b) {
+                        switch (operator) {
+                            case '+':
+                                return parseInt(a) + parseInt(b);
+                            case '-':
+                                return parseInt(a) - parseInt(b);
+                            case '*':
+                                return parseInt(a) * parseInt(b);
+                            case '/':
+                                return parseInt(a) / parseInt(b);
+                            default:
+                                throw new Error('Unsupported operator: ' + operator);
                         }
-                }
-                function calculate(a, operator, b) {
-                    switch (operator) {
-                        case '+':
-                            return parseInt(a) + parseInt(b);
-                        case '-':
-                            return parseInt(a) - parseInt(b);
-                        case '*':
-                            return parseInt(a) * parseInt(b);
-                        case '/':
-                            return parseInt(a) / parseInt(b);
-                        default:
-                            throw new Error('Unsupported operator: ' + operator);
                     }
-                }
-                for (let i = 0; i < final_expression.length; i++) {
-                    if (final_expression[i] === '*' || final_expression[i] === '/') {
-                        const result = calculate(final_expression[i - 1], final_expression[i], final_expression[i + 1]);
-                        final_expression.splice(i - 1, 3, result);
-                        i -= 1; // Adjust index to account for removed elements
+                    for (let i = 0; i < final_expression.length; i++) {
+                        if (final_expression[i] === '*' || final_expression[i] === '/') {
+                            const result = calculate(final_expression[i - 1], final_expression[i], final_expression[i + 1]);
+                            final_expression.splice(i - 1, 3, result);
+                            i -= 1; // Adjust index to account for removed elements
+                        }
                     }
-                }
-            
-                // Second pass: handle addition and subtraction
-                for (let i = 0; i < final_expression.length; i++) {
-                    if (final_expression[i] === '+' || final_expression[i] === '-') {
-                        const result = calculate(final_expression[i - 1], final_expression[i], final_expression[i + 1]);
-                        final_expression.splice(i - 1, 3, result);
-                        i -= 1; // Adjust index to account for removed elements
+                
+                    // Second pass: handle addition and subtraction
+                    for (let i = 0; i < final_expression.length; i++) {
+                        if (final_expression[i] === '+' || final_expression[i] === '-') {
+                            const result = calculate(final_expression[i - 1], final_expression[i], final_expression[i + 1]);
+                            final_expression.splice(i - 1, 3, result);
+                            i -= 1; // Adjust index to account for removed elements
+                        }
                     }
+                    console.log(final_expression,"---resultt")
+                    display.textContent = final_expression[0];
+                    numbers_arr.splice(0, numbers_arr.length);
+                    operators_arr.splice(0, operators_arr.length);
+                    //final_expression.splice(0, 1);
                 }
-                console.log(final_expression,"---resultt")
-                display.textContent = final_expression[0];
-                numbers_arr.splice(0, numbers_arr.length);
-                operators_arr.splice(0, operators_arr.length);
-                //final_expression.splice(0, 1);
             }
         })
     })
