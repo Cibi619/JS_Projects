@@ -11,10 +11,10 @@
 .calc-container {
     position: absolute;
     top: 10%;
-    left: 30%;
+    left: 15%;
     /* margin-inline: auto; */
     border: 1px solid blue;
-    width: 40vw;
+    width: 60vw;
     height: 70vh;
     display: flex;
     flex-direction: column;
