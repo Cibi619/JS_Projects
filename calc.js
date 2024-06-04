@@ -25,10 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (value == '0' || value == '1' || value == '2' || value == '3' || value == '4'
             || value == '5' || value == '6' || value == '7' || value == '8' || value == '9') 
             {
-                if (final_expression.length > 0 && display_val > 0)
+                if (final_expression.length == 1)
                 {
-                    display.textContent = 0;
-                    display_val = 0;
+                    // display.textContent = 0;
+                    // display_val = 0;
+                    final_expression.splice(0, 1);
+                    display.textContent = value;
                 }
                 else if (display_val == 0 || display_val.includes('+') || display_val.includes('-') 
                 || display_val.includes('*') || display_val.includes('/'))
@@ -106,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 display.textContent = final_expression[0];
                 numbers_arr.splice(0, numbers_arr.length);
                 operators_arr.splice(0, operators_arr.length);
-                final_expression.splice(0, 1);
+                //final_expression.splice(0, 1);
             }
         })
     })
