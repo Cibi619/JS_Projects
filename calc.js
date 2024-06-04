@@ -118,7 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                     console.log(final_expression,"---resultt")
-                    display.textContent = final_expression[0];
+                    if (final_expression[0].toString().includes('.'))
+                        display.textContent = parseFloat(final_expression[0]).toFixed(2);
+                    else 
+                        display.textContent = final_expression[0];
                     numbers_arr.splice(0, numbers_arr.length);
                     operators_arr.splice(0, operators_arr.length);
                     //final_expression.splice(0, 1);
